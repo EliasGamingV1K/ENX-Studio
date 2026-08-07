@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENX Studio | Desarrollo Web Profesional</title>
+    
+    <!-- METADATOS SEO Y OPEN GRAPH -->
+    <meta name="description" content="Desarrollo de páginas web modernas, rápidas y profesionales para llevar tu negocio al siguiente nivel.">
+    <meta property="og:title" content="ENX Studio | Desarrollo Web Profesional">
+    <meta property="og:description" content="Creamos sitios web a medida, optimizados y con diseño de alta calidad.">
+    <meta property="og:type" content="website">
+    
+    <!-- FAVICON Y LOGO REDES -->
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <meta property="og:image" content="img/logo.png">
+
+    <style>
+        /* RESET & VARIABLES (MODO OSCURO POR DEFECTO) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --background: #0b0f19;
+            --background-secondary: #121826;
+            --primary: #6C63FF;
+            --primary-hover: #8A84FF;
+            --text: #FFFFFF;
+            --text-secondary: #C6CBD7;
+            --card-bg: #121826;
+        }
+
+        /* VARIABLES PARA MODO CLARO */
+        .light-mode {
+            --background: #f4f6f9;
+            --background-secondary: #ffffff;
+            --primary: #5548c8;
+            --primary-hover: #6C63FF;
+            --text: #1a1a1a;
+            --text-secondary: #555555;
+            --card-bg: #ffffff;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: var(--background);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
+
+        /* FONDO DINÁMICO CON PARTÍCULAS FLOTANTES */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.20;
+            animation: floatParticle 15s infinite alternate ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            width: 350px;
+            height: 350px;
+            top: -50px;
+            left: -50px;
+            animation-duration: 12s;
+            opacity: 0.20;
+        }
+
+        .particle:nth-child(2) {
+            width: 450px;
+            height: 450px;
+            bottom: -100px;
+            right: -100px;
+            animation-duration: 18s;
+            background: #4ecdc4;
+            opacity: 0.14;
+        }
+
+        .particle:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            top: 45%;
+            left: 65%;
+            animation-duration: 14s;
+            opacity: 0.12;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0px) translateX(0px) scale(1); }
+            50% { transform: translateY(-50px) translateX(35px) scale(1.1); }
+            100% { transform: translateY(40px) translateX(-35px) scale(0.95); }
+        }
+
+        /* HEADER */
+        header {
+            background: var(--background-secondary);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: var(--primary); 
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a { 
+            color: var(--text); 
+            text-decoration: none; 
+            transition: color 0.3s; 
+        }
+        
+        .nav-links a:hover { color: var(--primary); }
+
+        /* SWITCH PERSONALIZADO DE MODO OSCURO / MODO CLARO */
+        .switch {
+            font-size: 14px;
+            position: relative;
+            display: inline-block;
+            width: 4em;
+            height: 2.2em;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2a2a2a;
+            transition: 0.4s;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.2em;
+            width: 1.2em;
+            border-radius: 20px;
+            left: 0.5em;
+            bottom: 0.5em;
+            transition: 0.4s;
+            transition-timing-function: cubic-bezier(0.81, -0.04, 0.38, 1.5);
+            box-shadow: inset 8px -4px 0px 0px #fff;
+        }
+
+        .switch input:checked + .slider {
+            background-color: #00a6ff;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(1.8em);
+            box-shadow: inset 15px -4px 0px 15px #ffcf48;
+        }
+
+        .star {
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            width: 5px;
+            transition: all 0.4s;
+            height: 5px;
+        }
+
+        .star_1 {
+            left: 2.5em;
+            top: 0.5em;
+        }
+
+        .star_2 {
+            left: 2.2em;
+            top: 1.2em;
+        }
+
+        .star_3 {
+            left: 3em;
+            top: 0.9em;
+        }
+
+        .switch input:checked + .slider .star {
+            opacity: 0;
+        }
+
+        .cloud {
+            width: 3.5em;
+            position: absolute;
+            bottom: -1.4em;
+            left: -1.1em;
+            opacity: 0;
+            transition: all 0.4s;
+            fill: #ffffff;
+        }
+
+        .switch input:checked + .slider .cloud {
+            opacity: 1;
+        }
+
+        /* Botón hamburguesa */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 80vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 20px;
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.2; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 2.5rem; }
+
+        /* BOTONES CON EFECTO DIFUMINADO */
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .btn:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(-3px); 
+            box-shadow: 0 0 22px rgba(108, 99, 255, 0.52);
+        }
+
+        /* SECCIONES GENERALES */
+        .servicios { padding: 5rem 5%; background: var(--background); text-align: center; transition: background 0.3s; }
+        .proyectos { padding: 5rem 5%; background: var(--background-secondary); text-align: center; transition: background 0.3s; }
+        .sobre-nosotros { padding: 5rem 5%; background: var(--background); text-align: center; transition: background 0.3s; }
+        .contacto { padding: 5rem 5%; background: var(--background-secondary); text-align: center; transition: background 0.3s; }
+
+        h2 { font-size: 2.5rem; margin-bottom: 3rem; color: var(--text); }
+        .contacto h2 { margin-bottom: 1rem; }
+        .contacto p { color: var(--text-secondary); margin-bottom: 3rem; }
+
+        /* ANIMACIÓN DE PULSO DINÁMICO */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 6px 18px rgba(108, 99, 255, 0.16); }
+            50% { box-shadow: 0 12px 34px rgba(108, 99, 255, 0.42); }
+            100% { box-shadow: 0 6px 18px rgba(108, 99, 255, 0.16); }
+        }
+
+        /* SOBRE NOSOTROS CONTENIDO */
+        .sobre-nosotros-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(128, 128, 128, 0.15);
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
+        }
+        .sobre-nosotros-card:hover {
+            border-color: var(--primary);
+            animation: pulseGlow 3s infinite ease-in-out;
+            transform: translateY(-5px);
+        }
+
+        .sobre-nosotros-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .sobre-nosotros-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ESTILOS PARA CONTENIDO EXTRA / ESCONDIDO */
+        .extra-content {
+            display: none;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(128, 128, 128, 0.2);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .extra-content h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .extra-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .extra-content ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .extra-content ul li {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .extra-content p.slogan {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.15rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 12px 28px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px rgba(108, 99, 255, 0.45);
+        }
+
+        /* GRIDS */
+        .grid-servicios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-proyectos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* TARJETAS DE SERVICIOS */
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(128, 128, 128, 0.15);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .card:hover { 
+            transform: translateY(-8px); 
+            border-color: var(--primary); 
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        .card h3, .card p {
+            position: relative;
+            z-index: 2;
+            transition: color 0.4s ease;
+        }
+        .card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary); }
+        .card p { color: var(--text-secondary); font-size: 1rem; }
+
+        /* IMÁGENES DE FONDO EN HOVER PARA TARJETAS */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-desarrollo::before {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('img/desarrollo web.avif');
+        }
+
+        .card-landing::before {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('img/lading page.jpg');
+        }
+
+        .card-optimizacion::before {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('img/optimizacion y mantenimiento.jpg');
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover h3, 
+        .card:hover p {
+            color: #ffffff;
+        }
+
+        /* TARJETAS DE PROYECTOS */
+        .proyecto-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden; 
+            text-align: left;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
+            border: 1px solid rgba(128, 128, 128, 0.15);
+        }
+        .proyecto-card:hover { 
+            transform: scale(1.02); 
+            border-color: var(--primary);
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        /* IMÁGENES DE PROYECTOS */
+        .proyecto-img {
+            height: 220px;
+            width: 100%;
+            overflow: hidden;
+            background-color: #0b0f19;
+        }
+
+        .proyecto-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .proyecto-card:hover .proyecto-img img {
+            transform: scale(1.05);
+        }
+
+        .proyecto-info { padding: 1.5rem; }
+        .proyecto-info h3 { color: var(--text); margin-bottom: 0.5rem; font-size: 1.3rem; }
+        .proyecto-info p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        
+        .enlace-proyecto { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; transition: color 0.3s; }
+        .enlace-proyecto:hover { color: var(--primary-hover); }
+
+        /* FORMULARIO */
+        .form-contacto {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-contacto input, .form-contacto textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+
+        .form-contacto input:focus, .form-contacto textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(108, 99, 255, 0.22);
+        }
+
+        .form-contacto textarea { resize: vertical; min-height: 150px; }
+
+        /* NOTIFICACIÓN TOAST */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 5px 25px rgba(108, 99, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2000;
+            transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .toast.show {
+            bottom: 30px;
+        }
+
+        .toast-icon {
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--background-secondary);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(128, 128, 128, 0.15);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        /* ANIMACIÓN SCROLL REVEAL (AMBAS DIRECCIONES) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--background-secondary);
+                flex-direction: column;
+                align-items: center;
+                padding: 1.5rem 0;
+                border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .nav-links.mobile-active {
+                max-height: 380px;
+            }
+
+            .hero h1 { font-size: 2.5rem; }
+            .sobre-nosotros-card { padding: 1.5rem; }
+            
+            .toast {
+                width: 90%;
+                padding: 1rem;
+                font-size: 0.9rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FONDO CON PARTÍCULAS FLOTANTES -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <a href="#" class="logo">
+            <img src="img/logo.png" alt="ENX Studio Logo">
+            ENX Studio
+        </a>
+        
+        <!-- Botón Hamburguesa -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="#servicios">Servicios</a>
+            <a href="#proyectos">Proyectos</a>
+            <a href="#sobre-nosotros">Sobre nosotros</a>
+            <a href="#contacto">Contacto</a>
+            
+            <!-- SWITCH ANIMADO TEMA CLARO/OSCURO -->
+            <label class="switch" aria-label="Cambiar tema">
+                <input type="checkbox" id="themeToggleCheckbox">
+                <span class="slider">
+                    <span class="star star_1"></span>
+                    <span class="star star_2"></span>
+                    <span class="star star_3"></span>
+                    <svg class="cloud" viewBox="0 0 24 24">
+                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+                    </svg>
+                </span>
+            </label>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero reveal">
+            <h1>Diseño y <span>Desarrollo Web</span></h1>
+            <p>Creamos páginas web modernas, optimizadas y de alto rendimiento adaptadas estrictamente a las necesidades de tu proyecto o negocio.</p>
+            <a href="#servicios" class="btn">Ver Servicios</a>
+        </section>
+
+        <!-- SERVICIOS SECTION -->
+        <section id="servicios" class="servicios">
+            <h2 class="reveal">Nuestros Servicios</h2>
+            <div class="grid-servicios">
+                <div class="card reveal card-desarrollo">
+                    <h3>Desarrollo Web</h3>
+                    <p>Creamos páginas web modernas, rápidas y adaptadas a cualquier dispositivo para que tu negocio transmita confianza desde el primer momento.</p>
+                </div>
+                
+                <div class="card reveal card-landing">
+                    <h3>Landing Pages</h3>
+                    <p>Diseñamos páginas enfocadas en convertir visitantes en clientes, con un diseño atractivo, carga rápida y una experiencia pensada para generar resultados.</p>
+                </div>
+                
+                <div class="card reveal card-optimizacion">
+                    <h3>Optimización & Mantenimiento</h3>
+                    <p>Mejoramos el rendimiento, corregimos errores y mantenemos tu sitio siempre actualizado para que funcione de forma rápida, segura y sin inconvenientes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROYECTOS / NUESTRO TRABAJO SECTION -->
+        <section id="proyectos" class="proyectos">
+            <h2 class="reveal">Nuestro Trabajo</h2>
+            <div class="grid-proyectos">
+                <!-- Tarjeta 1: Sitio Web Corporativo ENX Studio -->
+                <div class="proyecto-card reveal">
+                    <div class="proyecto-img">
+                        <img src="img/portfolio.png" alt="Sitio Web Corporativo ENX Studio">
+                    </div>
+                    <div class="proyecto-info">
+                        <h3>Sitio Web Corporativo ENX Studio</h3>
+                        <p>Diseño moderno con identidad visual propia, modo oscuro y claro, navegación fluida y una estructura pensada para transmitir profesionalismo.</p>
+                        <a href="#" class="enlace-proyecto">Ver Sitio →</a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Landing Page Comercial -->
+                <div class="proyecto-card reveal">
+                    <div class="proyecto-img">
+                        <img src="img/landing.png" alt="Landing Page Comercial">
+                    </div>
+                    <div class="proyecto-info">
+                        <h3>Landing Page Comercial</h3>
+                        <p>Página diseñada para presentar servicios de forma clara, generar confianza y aumentar las consultas de potenciales clientes.</p>
+                        <a href="#" class="enlace-proyecto">Ver Sitio →</a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Panel Administrativo -->
+                <div class="proyecto-card reveal">
+                    <div class="proyecto-img">
+                        <img src="img/dashboard.png" alt="Panel Administrativo">
+                    </div>
+                    <div class="proyecto-info">
+                        <h3>Panel Administrativo</h3>
+                        <p>Interfaz intuitiva para gestionar información, visualizar datos y administrar contenidos de manera rápida y eficiente.</p>
+                        <a href="#" class="enlace-proyecto">Ver Sitio →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOBRE NOSOTROS SECTION -->
+        <section id="sobre-nosotros" class="sobre-nosotros">
+            <h2 class="reveal">Sobre nosotros</h2>
+            <div class="sobre-nosotros-card reveal">
+                <p>Somos un equipo de desarrolladores especializados en crear soluciones web personalizadas. Creemos que cada negocio tiene una identidad propia, por eso no trabajamos con páginas genéricas ni con diseños repetitivos: cada proyecto se desarrolla pensando en las necesidades y objetivos de quien lo solicita.</p>
+                <p>Nuestra forma de trabajar combina dos enfoques que se complementan. Por un lado, el análisis, la planificación y la organización de cada proyecto; por el otro, la creatividad y el desarrollo técnico necesarios para convertir una idea en una experiencia funcional, moderna y atractiva.</p>
+                <p>Nos involucramos en cada etapa del proceso, desde la primera reunión hasta la entrega final, manteniendo una comunicación cercana con el cliente para asegurarnos de que el resultado represente realmente su visión.</p>
+                <p>Más que crear sitios web, buscamos desarrollar herramientas digitales que ayuden a nuestros clientes a crecer.</p>
+
+                <!-- APARTADO ESCONDIDO: MÁS ACERCA DE NOSOTROS -->
+                <div class="extra-content" id="extraContent">
+                    <h3>Nuestra filosofía</h3>
+                    <p>Creemos que una página web debe hacer mucho más que verse bien. Debe transmitir confianza, representar la identidad de una marca y ofrecer una experiencia clara y agradable para quienes la visitan.</p>
+                    <p>Por eso cada proyecto se basa en cuatro pilares:</p>
+                    <ul>
+                        <li><strong>Personalización:</strong> cada sitio es único.</li>
+                        <li><strong>Calidad:</strong> priorizamos un código limpio y un diseño cuidado.</li>
+                        <li><strong>Comunicación:</strong> mantenemos al cliente informado durante todo el proceso.</li>
+                        <li><strong>Innovación:</strong> incorporamos herramientas modernas, incluida la inteligencia artificial cuando aporta valor real al proyecto.</li>
+                    </ul>
+
+                    <h3>¿Por qué elegirnos?</h3>
+                    <ul>
+                        <li>✔ Diseño personalizado, sin plantillas genéricas.</li>
+                        <li>✔ Desarrollo adaptado a las necesidades de cada cliente.</li>
+                        <li>✔ Comunicación constante durante todo el proyecto.</li>
+                        <li>✔ Tecnologías modernas e integración con inteligencia artificial cuando corresponde.</li>
+                        <li>✔ Compromiso con la calidad, el rendimiento y la seguridad.</li>
+                    </ul>
+
+                    <p class="slogan">Vos imaginás el proyecto. Nosotros lo diseñamos, lo desarrollamos y lo hacemos realidad.</p>
+                </div>
+
+                <!-- BOTÓN MÁS ACERCA DE NOSOTROS -->
+                <button class="btn-secondary" id="toggleAboutBtn">Más acerca de nosotros</button>
+            </div>
+        </section>
+
+        <!-- CONTACTO SECTION -->
+        <section id="contacto" class="contacto">
+            <h2 class="reveal">Hablemos de tu Proyecto</h2>
+            <p class="reveal">¿Listo para llevar tu idea a la web? Envíanos un correo y nos pondremos en contacto.</p>
+            
+            <!-- FORMULARIO -->
+            <form id="formContacto" class="form-contacto reveal" action="https://formspree.io/f/xgawvvwg" method="POST">
+                <input type="text" name="nombre" placeholder="Tu Nombre" required>
+                <input type="email" name="email" placeholder="Tu Correo Electrónico" required>
+                <textarea name="mensaje" placeholder="Cuéntanos los detalles de tu proyecto..." required></textarea>
+                <button type="submit" class="btn">Enviar Mensaje</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 ENX Studio. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- NOTIFICACIÓN DE ÉXITO (TOAST) -->
+    <div id="toastNotification" class="toast">
+        <span class="toast-icon">✔</span>
+        <p>Tu mensaje fue enviado con exito, en breve obtendras respuestas.</p>
+    </div>
+
+    <script>
+        // 1. Lógica del Menú Hamburguesa
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('mobile-active');
+            });
+        });
+
+        // 2. Lógica del Tema Oscuro / Claro con el Checkbox Switch
+        const themeToggleCheckbox = document.getElementById('themeToggleCheckbox');
+        const body = document.body;
+
+        themeToggleCheckbox.addEventListener('change', () => {
+            if (themeToggleCheckbox.checked) {
+                body.classList.add('light-mode');
+            } else {
+                body.classList.remove('light-mode');
+            }
+        });
+
+        // 3. Lógica del botón "Más acerca de nosotros" (Acordeón)
+        const toggleAboutBtn = document.getElementById('toggleAboutBtn');
+        const extraContent = document.getElementById('extraContent');
+
+        toggleAboutBtn.addEventListener('click', () => {
+            if (extraContent.style.display === 'none' || extraContent.style.display === '') {
+                extraContent.style.display = 'block';
+                toggleAboutBtn.textContent = 'Menos acerca de nosotros';
+            } else {
+                extraContent.style.display = 'none';
+                toggleAboutBtn.textContent = 'Más acerca de nosotros';
+            }
+        });
+
+        // 4. Animación Scroll Reveal Bidireccional
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(element => {
+            observer.observe(element);
+        });
+
+        // 5. Lógica del Formulario con Notificación (Fetch API)
+        const formContacto = document.getElementById('formContacto');
+        const toastNotification = document.getElementById('toastNotification');
+
+        formContacto.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const btnSubmit = formContacto.querySelector('button[type="submit"]');
+            const textoOriginal = btnSubmit.textContent;
+            
+            btnSubmit.textContent = 'Enviando...';
+            btnSubmit.disabled = true;
+
+            const data = new FormData(event.target);
+
+            try {
+                const response = await fetch(event.target.action, {
+                    method: formContacto.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    formContacto.reset();
+                    btnSubmit.textContent = textoOriginal;
+                    btnSubmit.disabled = false;
+
+                    toastNotification.classList.add('show');
+
+                    setTimeout(() => {
+                        toastNotification.classList.remove('show');
+                    }, 4000);
+                } else {
+                    alert("Hubo un problema al enviar el mensaje. Inténtalo de nuevo.");
+                    btnSubmit.textContent = textoOriginal;
+                    btnSubmit.disabled = false;
+                }
+            } catch (error) {
+                alert("Error de conexión. Inténtalo de nuevo.");
+                btnSubmit.textContent = textoOriginal;
+                btnSubmit.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
